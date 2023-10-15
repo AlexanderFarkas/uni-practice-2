@@ -13,18 +13,18 @@ packages:
     dependency: transitive
     description:
       name: beholder
-      sha256: "20de42b64c38e4526836ef4de952df5e5c42323ca36d8820feceec2a88033ff6"
+      sha256: dbf835e306666ad4a53cec54dfc229e9c7440b3bd25f9300aa53b0c01b346478
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1+6"
+    version: "0.0.1+8"
   beholder_flutter:
     dependency: "direct main"
     description:
       name: beholder_flutter
-      sha256: faaa1e5f7b57cd4d13aa20217fa939d7d7fce0cdf4f522d29fc00c1f7317570d
+      sha256: c79f35c68d9b9d6328a09c0d58cb498a6d631ba66567b7dcfba99f8263d06eb8
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.1+6"
+    version: "0.0.1+8"
   beholder_form:
     dependency: "direct main"
     description:
@@ -155,14 +155,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
-  rxdart:
-    dependency: "direct main"
-    description:
-      name: rxdart
-      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.27.7"
   sky_engine:
     dependency: transitive
     description: flutter

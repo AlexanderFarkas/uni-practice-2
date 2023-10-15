@@ -22,9 +22,10 @@ class FileSystemEntityTile extends StatefulWidget {
 class _FileSystemEntityTileState extends State<FileSystemEntityTile> {
   final tileFocus = FocusNode();
 
+  bool isHovered = false;
   DateTime? tapTimestamp;
-
   Disposer? disposeSelectedEntityListener;
+
   @override
   void initState() {
     disposeSelectedEntityListener =
@@ -62,16 +63,50 @@ class _FileSystemEntityTileState extends State<FileSystemEntityTile> {
               if (isSelected)
                 const SingleActivator(LogicalKeyboardKey.enter): () => vm.isEditing.value = true,
             },
-            child: ListTile(
-              focusNode: tileFocus,
-              onTap: _onTap,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              selected: isSelected,
-              selectedTileColor: Colors.grey.withOpacity(0.2),
-              leading: widget.entity is Directory ? const Icon(Icons.folder) : null,
-              title: watch(vm.isEditing)
-                  ? _EditNameTextField()
-                  : Text(path.basename(widget.entity.path)),
+            child: MouseRegion(
+              onEnter: (event) {
+                setState(() {
+                  isHovered = true;
+                });
+              },
+              onExit: (event) {
+                setState(() {
+                  isHovered = false;
+                });
+              },
+              child: Draggable(
+                data: widget.entity,
+                feedback: AbsorbPointer(
+                  child: Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    clipBehavior: Clip.antiAlias,
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    child: Opacity(
+                      opacity: 0.95,
+                      child: Material(child: _ListTile(entity: widget.entity)),
+                    ),
+                  ),
+                ),
+                child: DragTarget<FileSystemEntity>(
+                  onWillAccept: (entity) {
+                    if (widget.entity is! Directory) return false;
+                    return entity?.path != widget.entity.path;
+                  },
+                  onAccept: (entity) => vm.move(entity),
+                  builder: (context, candidates, __) => GestureDetector(
+                    onTap: _onTap,
+                    child: _ListTile(
+                      entity: widget.entity,
+                      focusNode: tileFocus,
+                      isSelected: isSelected,
+                      isHovered: isHovered,
+                      isEditing: watch(vm.isEditing),
+                      isDraggedOver: candidates.isNotEmpty,
+                    ),
+                  ),
+                ),
+              ),
             ),
           );
         },
@@ -92,6 +127,43 @@ class _FileSystemEntityTileState extends State<FileSystemEntityTile> {
     } else {
       viewModel.tryOpenEntity(widget.entity);
     }
+  }
+}
+
+class _ListTile extends StatelessWidget {
+  const _ListTile({
+    super.key,
+    this.focusNode,
+    this.isSelected = false,
+    this.isEditing = false,
+    this.isHovered = false,
+    this.isDraggedOver = false,
+    required this.entity,
+  });
+
+  final FileSystemEntity entity;
+  final FocusNode? focusNode;
+  final bool isSelected;
+  final bool isEditing;
+  final bool isHovered;
+  final bool isDraggedOver;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      focusNode: focusNode,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      selected: isSelected,
+      tileColor: isDraggedOver ? Colors.grey.withOpacity(0.2) : null,
+      selectedTileColor: Colors.grey.withOpacity(0.2),
+      leading: entity is Directory ? const Icon(Icons.folder) : null,
+      title: isEditing ? _EditNameTextField() : Text(path.basename(entity.path)),
+      trailing: isHovered
+          ? IconButton(
+              icon: const Icon(Icons.delete_forever_sharp),
+              onPressed: () => context.read<FileSystemEntityTileVm>().delete(),
+            )
+          : null,
+    );
   }
 }
 
@@ -127,14 +199,22 @@ class _EditNameTextFieldState extends State<_EditNameTextField> {
       },
       child: FieldObserver(
         field: vm.name,
-        builder: (context, watch, controller) => TextFormField(
-          controller: controller,
-          focusNode: focusNode,
-          textAlign: TextAlign.left,
-          textAlignVertical: TextAlignVertical.top,
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 4),
-            isDense: true,
+        builder: (context, watch, controller) => Focus(
+          onFocusChange: (hasFocus) {
+            if (!hasFocus) {
+              vm.isEditing.value = false;
+            }
+          },
+          canRequestFocus: false,
+          child: TextFormField(
+            controller: controller,
+            focusNode: focusNode,
+            textAlign: TextAlign.left,
+            textAlignVertical: TextAlignVertical.top,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.only(bottom: 4),
+              isDense: true,
+            ),
           ),
         ),
       ),

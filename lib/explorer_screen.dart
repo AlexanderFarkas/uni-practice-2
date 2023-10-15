@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:uni_practice_2/create_entity_dialog.dart';
 import 'package:uni_practice_2/explorer_screen_vm.dart';
 import 'package:uni_practice_2/file_system_entity_tile.dart';
+import 'package:uni_practice_2/search_dialog.dart';
 
 class ExplorerScreen extends StatelessWidget {
   const ExplorerScreen({super.key});
@@ -55,6 +56,14 @@ class ExplorerScreen extends StatelessWidget {
                           ),
                         ),
                         icon: const Icon(Icons.file_copy_rounded),
+                      ),
+                      const VerticalDivider(),
+                      TextButton(
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (_) => SearchDialog(explorerScreenVm: viewModel),
+                        ),
+                        child: Text("Search"),
                       )
                     ],
                   )

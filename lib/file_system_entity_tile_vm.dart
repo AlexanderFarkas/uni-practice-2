@@ -18,8 +18,13 @@ class FileSystemEntityTileVm extends ViewModel with FormMixin {
       }
     });
 
-  late final name = field<String>(value: path.basename(entity.path));
-  late final isEditing = state(false);
+  late final name = field<String>(value: "");
+  late final isEditing = state(false)
+    ..listenSync((_, isEditing) {
+      if (isEditing) {
+        name.value = path.basename(entity.path);
+      }
+    });
 
   void submitEdit() {
     try {
@@ -34,5 +39,14 @@ class FileSystemEntityTileVm extends ViewModel with FormMixin {
       isEditing.value = false;
       explorerScreenVm.refresh();
     }
+  }
+
+  void delete() {
+    entity.deleteSync(recursive: false);
+    explorerScreenVm.refresh();
+  }
+
+  void move(FileSystemEntity entity) {
+    explorerScreenVm.move(entity, this.entity);
   }
 }
