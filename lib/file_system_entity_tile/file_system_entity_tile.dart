@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
-import 'package:uni_practice_2/explorer_screen_vm.dart';
+import 'package:uni_practice_2/explorer_screen/explorer_screen_vm.dart';
 
 import 'file_system_entity_tile_vm.dart';
 
@@ -94,16 +94,14 @@ class _FileSystemEntityTileState extends State<FileSystemEntityTile> {
                     return entity?.path != widget.entity.path;
                   },
                   onAccept: (entity) => vm.move(entity),
-                  builder: (context, candidates, __) => GestureDetector(
+                  builder: (context, candidates, __) => _ListTile(
                     onTap: _onTap,
-                    child: _ListTile(
-                      entity: widget.entity,
-                      focusNode: tileFocus,
-                      isSelected: isSelected,
-                      isHovered: isHovered,
-                      isEditing: watch(vm.isEditing),
-                      isDraggedOver: candidates.isNotEmpty,
-                    ),
+                    entity: widget.entity,
+                    focusNode: tileFocus,
+                    isSelected: isSelected,
+                    isHovered: isHovered,
+                    isEditing: watch(vm.isEditing),
+                    isDraggedOver: candidates.isNotEmpty,
                   ),
                 ),
               ),
@@ -118,7 +116,7 @@ class _FileSystemEntityTileState extends State<FileSystemEntityTile> {
     final viewModel = context.read<ExplorerScreenVm>();
 
     final isDoubleClickTimeframeElapsed = tapTimestamp == null ||
-        tapTimestamp!.difference(DateTime.timestamp()).inMilliseconds.abs() > 300;
+        tapTimestamp!.difference(DateTime.timestamp()).inMilliseconds.abs() > 500;
 
     tileFocus.requestFocus();
     if (isDoubleClickTimeframeElapsed) {
@@ -139,6 +137,7 @@ class _ListTile extends StatelessWidget {
     this.isHovered = false,
     this.isDraggedOver = false,
     required this.entity,
+    this.onTap,
   });
 
   final FileSystemEntity entity;
@@ -147,10 +146,12 @@ class _ListTile extends StatelessWidget {
   final bool isEditing;
   final bool isHovered;
   final bool isDraggedOver;
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
       focusNode: focusNode,
+      onTap: onTap,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       selected: isSelected,
       tileColor: isDraggedOver ? Colors.grey.withOpacity(0.2) : null,

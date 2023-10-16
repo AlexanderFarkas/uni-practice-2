@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_practice_2/explorer_screen.dart';
-import 'package:uni_practice_2/explorer_screen_vm.dart';
+import 'explorer_screen/explorer_screen.dart';
+import 'explorer_screen/explorer_screen_vm.dart';
 
 void main() {
   runApp(const FileExplorerApplication());

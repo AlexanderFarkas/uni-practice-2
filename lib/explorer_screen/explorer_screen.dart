@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_practice_2/create_entity_dialog.dart';
-import 'package:uni_practice_2/explorer_screen_vm.dart';
-import 'package:uni_practice_2/file_system_entity_tile.dart';
-import 'package:uni_practice_2/search_dialog.dart';
+import 'package:uni_practice_2/explorer_screen/explorer_screen_vm.dart';
+import 'package:uni_practice_2/file_system_entity_tile/file_system_entity_tile.dart';
+import 'package:uni_practice_2/search_dialog/search_dialog.dart';
 
 class ExplorerScreen extends StatelessWidget {
   const ExplorerScreen({super.key});

@@ -2,8 +2,8 @@ import 'package:beholder_flutter/beholder_flutter.dart';
 import 'package:beholder_form/beholder_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_practice_2/explorer_screen_vm.dart';
-import 'package:uni_practice_2/search_dialog_vm.dart';
+import 'package:uni_practice_2/explorer_screen/explorer_screen_vm.dart';
+import 'package:uni_practice_2/search_dialog/search_dialog_vm.dart';
 import 'package:path/path.dart' as path;
 
 class SearchDialog extends StatelessWidget {

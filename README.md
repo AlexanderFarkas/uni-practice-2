@@ -1,16 +1,13 @@
-# uni_practice_2
+Использовался Flutter 3.15.0-15.2.pre • channel beta
 
-A new Flutter project.
+Для запуска проекта необходимо:
+```shell
+flutter pub get
+flutter run
+```
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Скриншоты
+![Скриншот 1](images/initial_hover.png)
+![Скриншот 2](images/search.png)
+![Скриншот 3](images/create.png)
+![Скриншот 4](images/rename_on_enter.png)
